@@ -12,4 +12,3 @@ export const patientSchema = z.object({
     .min(0, { message: "DIH não pode ser menor que 0" }),
 });
 
-export type Patient = z.infer<typeof patientSchema>;
