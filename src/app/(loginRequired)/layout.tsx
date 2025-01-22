@@ -6,6 +6,10 @@ export default function layout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className={" antialiased flex justify-center mx-[350px]"}>{children}</section>
+    <section
+      className={" antialiased flex justify-center mx-[350px] mt-[60px]"}
+    >
+      {children}
+    </section>
   );
 }
