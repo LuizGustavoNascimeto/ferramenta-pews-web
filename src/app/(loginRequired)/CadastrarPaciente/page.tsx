@@ -12,20 +12,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Title from "@/components/ui/title";
-import { Patient, patientSchema } from "@/lib/schemas/patientSchema";
+import { patientSchema } from "@/lib/schemas/patientSchema";
+import { patientReq } from "@/lib/types/patient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function page() {
-  const form = useForm<Patient>({
+  const form = useForm<patientReq>({
     resolver: zodResolver(patientSchema),
   });
-  function onSubmit(values: Patient) {
+  function onSubmit(values: patientReq) {
     createPatient(values);
   }
 
   return (
-    <div className="w-full py-[60px] px-4 flex flex-col space-y-4">
+    <div className="w-full px-4 flex flex-col space-y-4">
       <Title>Cadastro de Paciente</Title>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
