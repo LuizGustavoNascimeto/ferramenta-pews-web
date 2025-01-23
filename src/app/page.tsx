@@ -1,9 +1,12 @@
+
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import backgroundImagePews from "../public/pews-background.png";
+
 import Link from "next/link";
 import { Inria_Serif } from "next/font/google";
+
 
 const inriaSerif = Inria_Serif({
   weight: ["400", "700"],
@@ -30,7 +33,6 @@ export default function Home() {
           ferramenta
         </div>
       </div>
-
       <div className="flex justify-center items-center px-40 py-10">
         <p className="text-xl">
           Ferramenta PEWS serve para tal tal Lorem ipsum dolor sit amet,

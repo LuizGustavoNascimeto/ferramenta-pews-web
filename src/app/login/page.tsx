@@ -1,21 +1,12 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { userSchema } from "@/lib/schemas/userSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { useForm } from "react-hook-form";
 
 export default function Entrar() {
 
-  const form = useForm<Zod.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
-    defaultValues: {
-      username: "",
-    },
-  })
+  const form = useForm()
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
@@ -38,6 +29,8 @@ export default function Entrar() {
                   <FormControl>
                     <Input placeholder="Jordana da silva" {...field} />
                   </FormControl>
+                  <FormDescription />
+                  <FormMessage />
                   </FormItem>
                 )}
                 />
@@ -50,12 +43,15 @@ export default function Entrar() {
                   <FormControl>
                     <Input placeholder="********" {...field} />
                   </FormControl>
-                  <FormDescription>Esqueceu a senha?</FormDescription>
+                  <FormDescription />
+                  <FormMessage />
                   </FormItem>
                 )}
                 />
-                <Button type="submit" > Entrar</Button>
             </Form>
+            <div className="flex justify-end items-end w-[100%]">
+              <a href="">Esqueceu sua senha?</a>
+            </div>
           </div>
         </div>
       </div>
