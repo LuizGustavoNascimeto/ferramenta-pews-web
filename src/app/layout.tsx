@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { Inria_Serif, Inter } from "next/font/google";
 import "./globals.css";
-import { Inter } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Ferramenta PEWS",
@@ -17,7 +17,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>{children}</body>

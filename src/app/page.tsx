@@ -1,43 +1,38 @@
-"use client";
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import backgroundImagePews from "../public/pews-background.png";
 
-export default function Home() {
-  const router = useRouter();
+import Link from "next/link";
+import { Inria_Serif } from "next/font/google";
 
+
+const inriaSerif = Inria_Serif({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+});
+export default function Home() {
   return (
     <div>
-      <header className="flex justify-between items-center p-2 fixed bg-transparent w-full ">
-        <Button onClick={() => router.push("/entrar")}>Entrar</Button>
-        <h1 className="font-semibold text-base">Ferramenta PEWS</h1>
-      </header>
-
-      <div className="flex flex-col justify-center items-center h-[90vh] gap-10">
-        <div>
+      <div className="flex flex-col  items-center h-screen gap-10 bg-pews justify-between">
+        <header className="flex justify-between items-center p-2 bg-transparent w-full ">
+          <h1 className="font-semibold text-base">Ferramenta PEWS</h1>
+          <Link href={"/entrar"}>
+            <Button>Entrar</Button>
+          </Link>
+        </header>
+        <div className={`self-center ${inriaSerif.className}`}>
           <h1 className="font-semibold text-9xl">PEWS</h1>
           <h2 className="text-xl">Pontuação de Alerta Precoce Pediátrico</h2>
         </div>
-        <Image
-          src={backgroundImagePews}
-          alt="Background"
-          fill
-          quality={100}
-          priority
-          className="absolute inset-0 z-[-1] object-cover"
-        ></Image>
-        <Button>Quero testar</Button>
-      </div>
-
-      <div className="bg-primary h-[20vh] flex justify-center items-center">
-        <h1 className="text-5xl">
+        <div className="bg-trueGreen py-4 text-center justify-self-end text-2xl w-full">
           Conheça o Pediatric Early Warning Score - PEWS, e como utilizar a
           ferramenta
-        </h1>
+        </div>
       </div>
-
       <div className="flex justify-center items-center px-40 py-10">
         <p className="text-xl">
           Ferramenta PEWS serve para tal tal Lorem ipsum dolor sit amet,
