@@ -11,43 +11,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { newUserSchema } from "@/lib/schemas/newUserSchema";
 import { userSchema } from "@/lib/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 
 export default function Entrar() {
-  const form = useForm<Zod.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<Zod.infer<typeof newUserSchema>>({
+    resolver: zodResolver(newUserSchema),
     defaultValues: {
       username: "",
     },
   });
 
-  const onSubmit = (values: Zod.infer<typeof userSchema>) => {
+  const onSubmit = (values: Zod.infer<typeof newUserSchema>) => {
     console.log(values);
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="w-3/5 h-3/4 bg-background rounded-2xl flex justify-between overflow-hidden">
-        <div className="w-2/5 h-full bg-primary flex flex-col justify-between items-center py-40">
+        <div className="w-2/5 h-full bg-primary flex flex-col items-center py-40">
           <div className="">
             <h1 className="font-bold text-4xl text-white px-20 text-center">
               Ferramenta PEWS
             </h1>
           </div>
-          <div className="flex  flex-col text-white gap-1">
-            <div className="">Não possui conta?</div>
-            <Link href={"/cadastrar"} className="w-[100%]">
-              <Button variant={"outline"} className="border-white w-full">Criar conta</Button>
-            </Link>
-          </div>
         </div>
 
         <div className="flex flex-col justify-center items-start p-10 w-3/5 gap-10">
-          <h1 className="font-semibold text-4xl text-primary w-full text-center">Entrar</h1>
+          <h1 className="font-semibold text-4xl text-primary w-full text-center">Criar Conta</h1>
           <div className="w-full">
             <Form {...form}>
               <form
@@ -68,6 +62,30 @@ export default function Entrar() {
                 />
                 <FormField
                   control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> Email </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Jordanadasilva@gmail.com" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cpf"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> cpf </FormLabel>
+                      <FormControl>
+                        <Input placeholder="***.***.***-**" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -78,9 +96,20 @@ export default function Entrar() {
                     </FormItem>
                   )}
                 />
-                <div className="flex flex-row justify-between items-center">
-                  <span className="opacity-70">Esqueceu sua senha</span>
-                  <Button type="submit"> Entrar</Button>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> Confirmar Senha </FormLabel>
+                      <FormControl>
+                        <Input placeholder="********" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-row justify-end items-center">
+                  <Button type="submit"> Criar conta</Button>
                 </div>
               </form>
             </Form>
