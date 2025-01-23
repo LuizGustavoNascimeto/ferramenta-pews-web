@@ -17,7 +17,7 @@ const inriaSerif = Inria_Serif({
 export default function Home() {
   return (
     <div>
-      <div className="flex flex-col  items-center h-screen gap-10 bg-pews justify-between">
+      <div className="flex flex-col  items-center h-screen gap-10 bg-pews justify-between bg-cover">
         <header className="flex justify-between items-center p-2 bg-transparent w-full ">
           <h1 className="font-semibold text-base">Ferramenta PEWS</h1>
           <Link href={"/entrar"}>
