@@ -13,7 +13,7 @@ export default function layout({
         <div className="fixed ">
           <AppSidebar />
         </div>
-        <main className="antialiased flex justify-center mx-auto mt-[60px]">
+        <main className="antialiased flex justify-center mx-auto max-w-[80%] mt-[60px]">
           {children}
         </main>
       </SidebarProvider>
