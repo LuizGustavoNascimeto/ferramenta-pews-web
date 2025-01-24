@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSidebar } from "@/components/ui/sidebar";
 import Title from "@/components/ui/title";
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import { patientReq } from "@/lib/types/patient";
@@ -24,6 +25,7 @@ export default function page() {
   function onSubmit(values: patientReq) {
     createPatient(values);
   }
+
 
   return (
     <div className="w-full px-4 flex flex-col space-y-4">
