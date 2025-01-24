@@ -58,7 +58,7 @@ export const getAllPatients = async (): Promise<patientRes[]> => {
       bed: "D4",
       dih: 2,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date("2025-01-01"),
     },
   ];
 
