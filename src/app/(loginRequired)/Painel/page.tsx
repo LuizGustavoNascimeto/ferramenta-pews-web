@@ -1,22 +1,37 @@
+"use client";
+import { getAllPatients } from "@/api/patient";
 import Card from "@/components/ui/card";
+import Title from "@/components/ui/title";
+import { patientRes } from "@/lib/types/patient";
+import { useEffect, useState } from "react";
 
-
-export default function Painel() {
+export default function painel() {
+  const [patients, setPatients] = useState<patientRes[]>([]);
   
+    useEffect(() => {
+      async function fetchPatients() {
+        const data = await getAllPatients();
+        setPatients(data);
+      }
+      fetchPatients();
+    }, []);
+  
+    console.log(patients);
+
 
   return (
-    <div className="flex flex-col justify-start w-full gap-10">
-      <h1 className="font-semibold text-4xl">Painel</h1>
+    <div className="w-full space-y-4">
+      <Title>Painel</Title>
       <div>
         <h2 className="font-medium text-2xl">Espaços de trabalho</h2>
         <div>
-          <div className="grid grid-cols-4 place-items-center rounded-md w-full py-3 px-5">
+          <div className="grid grid-cols-4 place-items-center rounded-md py-3 px-5">
             <h3>Nome</h3>
             <h3>Data de inscrição</h3>
             <h3></h3>
             <h3>Configuração</h3>
           </div>
-          <Card name="Hospital UEMmmm" dateAvaluation="20/12/2024" pewsPontuation=""></Card>
+          <Card name="Hospital UEMmmm" dateAvaluation={new Date}></Card>
         </div>
       </div>
       <div>
@@ -28,9 +43,12 @@ export default function Painel() {
             <h3>Pontuação</h3>
             <h3>Configuração</h3>
           </div>
-          <Card name="Jordana" dateAvaluation="20/12/2024" pewsPontuation="5"></Card>
+          {patients.map((patient) => (
+            <Card name={patient.name} dateAvaluation={patient.updatedAt} pewsPontuation={patient.dih} patientId={patient.id}></Card>
+          ))}
         </div>
       </div>
+
     </div>
   );
 }
