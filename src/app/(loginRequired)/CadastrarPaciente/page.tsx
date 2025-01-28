@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DatePicker } from "@/components/ui/datePicker";
 import {
   Form,
@@ -64,7 +65,7 @@ export default function CadastrarPaciente() {
     <div className="w-full px-4 flex flex-col space-y-4">
       <Title>Cadastro de Paciente</Title>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="name"
@@ -140,7 +141,7 @@ export default function CadastrarPaciente() {
               )}
             />
           </div>
-          <div className={`space-y-6 ${hasScore ? "" : "none"}`}>
+          <div className={`space-y-4 ${hasScore ? "" : "none"}`}>
             <hr className="opacity-50" />
             <div className="flex flex-row gap-4">
               <FormField
@@ -285,6 +286,42 @@ export default function CadastrarPaciente() {
                 </FormItem>
               )}
             />
+            <div className="flex flex-row gap-4">
+              <FormField
+                control={form.control}
+                name="nebulizacao"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-2 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Nebulização de resgate em 15 minutos
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="emese"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-2  space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      3 episódios ou mais de emese no pós operatório{" "}
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <div className=" flex flex-row justify-end space-x-4">
             <Button
@@ -296,7 +333,9 @@ export default function CadastrarPaciente() {
                 ? "- Remover avaliação PEWS"
                 : "+ Adicionar avaliação PEWS"}
             </Button>
-            <Button type="submit">Cadastrar</Button>
+            <Button type="submit" onClick={() => onSubmit(form.getValues())}>
+              Cadastrar
+            </Button>
           </div>
         </form>
       </Form>
