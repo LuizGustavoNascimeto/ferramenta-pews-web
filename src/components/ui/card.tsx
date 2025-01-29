@@ -13,13 +13,13 @@ interface CardProps {
 
 export default function Card({name, dateAvaluation, pewsPontuation, patientId} : CardProps) {
   return (
-    <div className="grid grid-cols-4 place-items-center rounded-md bg-card w-full py-3 px-5 ">
-      <h1>{name}</h1>
+    <div className="grid grid-cols-4 place-items-center rounded-md bg-card py-3 px-5">
+      <h1 className="justify-self-start">{name}</h1>
       <h2>{dateAvaluation?.toDateString()}</h2>
       <h2>{pewsPontuation}</h2>
-      <Link href={`/Pacientes/${patientId}`}>
-        <Button>
-        <Settings></Settings>
+      <Link href={`/Pacientes/${patientId}`} className="justify-self-end">
+        <Button className="w-fit">
+          <Settings></Settings>
         </Button>
       </Link>
     </div>
