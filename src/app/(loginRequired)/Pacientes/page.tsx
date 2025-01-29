@@ -33,12 +33,18 @@ export default function Paciente() {
   }
 
   return (
-    <div className="gap-3 flex flex-col">
+    <div className="gap-3 flex flex-col min-w-[800px]">
       <Title>Lista de Pacientes</Title>
 
-        <div className="flex flex-col gap-2">
-          <h2 className="font-semibold">Pesquisar</h2>
+      
+      <div className="flex flex-row items-end gap-1 w-full">
+        <Link href={"/CadastrarPaciente"} className="">
+          <Button>Novo Paciente</Button>
+        </Link>
 
+        <div className="flex flex-col gap-2 w-full">
+          <h2 className="font-semibold">Pesquisar</h2>
+          
           <Input 
             type="text"
             placeholder="Ex: João Pereira"
@@ -47,18 +53,12 @@ export default function Paciente() {
             className=""
           />
         </div>
-
-        <div className="flex justify-end">
-          <Link href={"/CadastrarPaciente"} className="w-fit">
-            <Button>Cadastrar Paciente</Button>
-          </Link>
-        </div>
+      </div>
 
       <div className="grid grid-cols-4 place-items-center rounded-md w-full py-3 px-5">
-        <h3>Nome</h3>
-        <h3>Data de avaliação</h3>
-        <h3>Pontuação</h3>
-        <h3>Configuração</h3>
+        <h3 className="justify-self-start font-semibold">Nome</h3>
+        <h3 className="font-semibold">Data de avaliação</h3>
+        <h3 className="font-semibold">Pontuação</h3>
       </div>
 
       {filteredItems.length > 0 ? (
