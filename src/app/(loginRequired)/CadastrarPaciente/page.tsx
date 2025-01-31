@@ -308,7 +308,7 @@ export default function CadastrarPaciente() {
                 control={form.control}
                 name="emese"
                 render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2  space-y-0">
+                  <FormItem className="flex items-center space-x-2  space-y-0 5 5 5 5">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
