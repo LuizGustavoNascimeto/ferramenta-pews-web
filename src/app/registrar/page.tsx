@@ -40,7 +40,9 @@ export default function Entrar() {
         </div>
 
         <div className="flex flex-col justify-center items-start p-10 w-3/5 gap-10">
-          <h1 className="font-semibold text-4xl text-primary w-full text-center">Criar Conta</h1>
+          <h1 className="font-semibold text-4xl text-primary w-full text-center">
+            Criar Conta
+          </h1>
           <div className="w-full">
             <Form {...form}>
               <form
@@ -66,7 +68,10 @@ export default function Entrar() {
                     <FormItem>
                       <FormLabel> Email </FormLabel>
                       <FormControl>
-                        <Input placeholder="Jordanadasilva@gmail.com" {...field} />
+                        <Input
+                          placeholder="Jordanadasilva@gmail.com"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -107,6 +112,7 @@ export default function Entrar() {
                     </FormItem>
                   )}
                 />
+
                 <div className="flex flex-row justify-end items-center">
                   <Button type="submit"> Criar conta</Button>
                 </div>
