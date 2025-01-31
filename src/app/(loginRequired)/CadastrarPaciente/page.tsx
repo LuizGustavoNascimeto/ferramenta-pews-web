@@ -222,7 +222,7 @@ export default function CadastrarPaciente() {
                     </FormControl>
                     <SelectContent>
                       {neuroOptions.map((option, index) => (
-                        <SelectItem key={index} value={option}>
+                        <SelectItem key={index} value={index}>
                           {option}
                         </SelectItem>
                       ))}
@@ -298,9 +298,7 @@ export default function CadastrarPaciente() {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Nebulização de resgate em 15 minutos
-                    </FormLabel>
+                    <FormLabel>Nebulização de resgate em 15 minutos</FormLabel>
                   </FormItem>
                 )}
               />
@@ -308,20 +306,23 @@ export default function CadastrarPaciente() {
                 control={form.control}
                 name="emese"
                 render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2  space-y-0 5 5 5 5">
+                  <FormItem className="flex items-center space-x-2  space-y-0">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    <FormLabel>
                       3 episódios ou mais de emese no pós operatório{" "}
                     </FormLabel>
                   </FormItem>
                 )}
               />
             </div>
+          </div>
+          <div className="font-bold text-xl py-2">
+            Pontuação: <span className="text-primary">{55}</span>
           </div>
           <div className=" flex flex-row justify-end space-x-4">
             <Button
