@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function scoreCalculator(score: scoreReq): number {
-  const {
+  let {
     estadoConsciencia,
     fc,
     rpm,
@@ -18,9 +18,18 @@ export function scoreCalculator(score: scoreReq): number {
     nebulizacao,
     emese,
   } = score;
+  console.log(score);
 
   let scoreValue = 0;
-
+  if (avaliacaoNeurologica === undefined) {
+    avaliacaoNeurologica = 0;
+  }
+  if (avaliacaoCardioVascular === undefined) {
+    avaliacaoCardioVascular = 0;
+  }
+  if (avaliacaoRespiratoria === undefined) {
+    avaliacaoRespiratoria = 0;
+  }
   scoreValue += avaliacaoNeurologica;
   scoreValue += avaliacaoCardioVascular;
   scoreValue += avaliacaoRespiratoria;
