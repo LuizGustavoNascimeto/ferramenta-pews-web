@@ -21,39 +21,72 @@ import {
 import Title from "@/components/ui/title";
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import scoreSchema from "@/lib/schemas/scoreSchema";
+import { intervention, scoreCalculator } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function CadastrarPaciente() {
   const cardioOptions = [
-    "Corado ou TEC 1-2 seg",
-    "Pálido ou TEC 3 seg ou FC acima do limite superior para a idade",
-    "Moteado ou TEC 4 seg ou FC ≥ 20 bpm acima do limite superior para a idade",
-    "Acinzentado / cianótico ou TEC ≥ 5 seg ou FC ≥ 30 bpm acima do limite superior para a idade ou bradicardia para a idade",
+    { text: "Corado ou TEC 1-2 seg", value: 0 },
+    {
+      text: "Pálido ou TEC 3 seg ou FC acima do limite superior para a idade",
+      value: 1,
+    },
+    {
+      text: "Moteado ou TEC 4 seg ou FC ≥ 20 bpm acima do limite superior para a idade",
+      value: 2,
+    },
+    {
+      text: "Acinzentado / cianótico ou TEC ≥ 5 seg ou FC ≥ 30 bpm acima do limite superior para a idade ou bradicardia para a idade",
+      value: 3,
+    },
   ];
   const neuroOptions = [
-    "Ativo",
-    "Sonolento/Hipoativo",
-    "Irritado",
-    "Letárgico/Obnubilado ou resposta reduzida à dor",
+    { text: "Ativo", value: 0 },
+    { text: "Sonolento/Hipoativo", value: 1 },
+    { text: "Irritado", value: 2 },
+    { text: "Letárgico/Obnubilado ou resposta reduzida à dor", value: 3 },
   ];
   const respOptions = [
-    "FR normal para a idade, sem retração",
-    "FR acima do limite superior para a idade, uso de musculatura acessória ou FiO2 ≥ 30% ou 4 litros/min de O2",
-    "FR ≥ 20 rpm acima do limite superior para a idade, retrações subcostais, intercostais e de fúrcula ou FiO2 ≥ 40% ou 6 litros/min de O2",
-    "FR ≥ 5 rpm abaixo do limite inferior para a idade, retrações subcostais, intercostais, de fúrcula, do esterno e gemência ou FiO2 ≥ 50% ou 8 litros/min de O2",
+    { text: "FR normal para a idade, sem retração", value: 0 },
+    {
+      text: "FR acima do limite superior para a idade, uso de musculatura acessória ou FiO2 ≥ 30% ou 4 litros/min de O2",
+      value: 1,
+    },
+    {
+      text: "FR ≥ 20 rpm acima do limite superior para a idade, retrações subcostais, intercostais e de fúrcula ou FiO2 ≥ 40% ou 6 litros/min de O2",
+      value: 2,
+    },
+    {
+      text: "FR ≥ 5 rpm abaixo do limite inferior para a idade, retrações subcostais, intercostais, de fúrcula, do esterno e gemência ou FiO2 ≥ 50% ou 8 litros/min de O2",
+      value: 3,
+    },
   ];
   const combinedSchema = z.intersection(patientSchema, scoreSchema);
   const form = useForm<z.infer<typeof combinedSchema>>({
     resolver: zodResolver(combinedSchema),
   });
 
+  const [scoreValue, setScoreValue] = useState(0);
+
+  const watchField = [
+    form.watch().avaliacaoCardioVascular,
+    form.watch().avaliacaoNeurologica,
+    form.watch().avaliacaoRespiratoria,
+    form.watch().nebulizacao,
+    form.watch().emese,
+    form.watch().estadoConsciencia,
+  ];
+
+  useEffect(() => {
+    const score = scoreCalculator(form.getValues());
+    setScoreValue(score);
+  }, watchField);
+
   const onSubmit = (data: z.infer<typeof combinedSchema>) => {
     console.log("VALUES");
-    console.log(data);
-
     // createPatient(data);
     // if (hasScore) {
     //   createScore(data);
@@ -150,10 +183,7 @@ export default function CadastrarPaciente() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Estado de Consciência</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="selecione" />
@@ -212,8 +242,9 @@ export default function CadastrarPaciente() {
                 <FormItem>
                   <FormLabel>Avaliação Neurológica</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(data) => {
+                      field.onChange(Number(data));
+                    }}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -221,9 +252,12 @@ export default function CadastrarPaciente() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {neuroOptions.map((option, index) => (
-                        <SelectItem key={index} value={option}>
-                          {option}
+                      {neuroOptions.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          value={option.value.toString()}
+                        >
+                          {option.text}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -239,8 +273,9 @@ export default function CadastrarPaciente() {
                 <FormItem>
                   <FormLabel>Avaliação Respiratória</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(data) => {
+                      field.onChange(Number(data));
+                    }}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -248,9 +283,12 @@ export default function CadastrarPaciente() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {respOptions.map((option, index) => (
-                        <SelectItem key={index} value={option}>
-                          {option}
+                      {respOptions.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          value={option.value.toString()}
+                        >
+                          {option.text.toString()}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -266,8 +304,9 @@ export default function CadastrarPaciente() {
                 <FormItem>
                   <FormLabel>Avaliação Cardiovascular</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(data) => {
+                      field.onChange(Number(data));
+                    }}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -275,9 +314,12 @@ export default function CadastrarPaciente() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {cardioOptions.map((option, index) => (
-                        <SelectItem key={index} value={option}>
-                          {option}
+                      {cardioOptions.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          value={option.value.toString()}
+                        >
+                          {option.text}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -298,9 +340,7 @@ export default function CadastrarPaciente() {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Nebulização de resgate em 15 minutos
-                    </FormLabel>
+                    <FormLabel>Nebulização de resgate em 15 minutos</FormLabel>
                   </FormItem>
                 )}
               />
@@ -308,20 +348,23 @@ export default function CadastrarPaciente() {
                 control={form.control}
                 name="emese"
                 render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2  space-y-0 5 5 5 5">
+                  <FormItem className="flex items-center space-x-2  space-y-0">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    <FormLabel>
                       3 episódios ou mais de emese no pós operatório{" "}
                     </FormLabel>
                   </FormItem>
                 )}
               />
             </div>
+          </div>
+          <div className="font-bold text-xl py-2">
+            Pontuação: <span className="text-primary">{scoreValue}</span>
           </div>
           <div className=" flex flex-row justify-end space-x-4">
             <Button
