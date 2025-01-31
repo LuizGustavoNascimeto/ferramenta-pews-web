@@ -11,25 +11,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { newUserSchema } from "@/lib/schemas/newUserSchema";
 import { userSchema } from "@/lib/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 
 export default function Entrar() {
-  const form = useForm<Zod.infer<typeof newUserSchema>>({
-    resolver: zodResolver(newUserSchema),
+  const form = useForm<Zod.infer<typeof userSchema>>({
+    resolver: zodResolver(userSchema),
     defaultValues: {
       username: "",
     },
   });
 
-
-  const onSubmit = (values: Zod.infer<typeof newUserSchema>) => {
+  const onSubmit = (values: Zod.infer<typeof userSchema>) => {
     console.log(values);
   };
-
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
@@ -115,7 +112,7 @@ export default function Entrar() {
                     </FormItem>
                   )}
                 />
-                
+
                 <div className="flex flex-row justify-end items-center">
                   <Button type="submit"> Criar conta</Button>
                 </div>
