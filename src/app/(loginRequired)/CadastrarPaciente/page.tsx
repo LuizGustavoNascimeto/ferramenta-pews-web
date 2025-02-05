@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import Title from "@/components/ui/title";
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import scoreSchema from "@/lib/schemas/scoreSchema";
@@ -92,7 +93,7 @@ export default function CadastrarPaciente() {
     //   createScore(data);
     // }
   };
-  const [hasScore, setHasScore] = useState(true);
+  const [hasScore, setHasScore] = useState(false);
 
   return (
     <div className="w-full px-4 flex flex-col space-y-4">
@@ -174,8 +175,8 @@ export default function CadastrarPaciente() {
               )}
             />
           </div>
-          <div className={`space-y-4 ${hasScore ? "" : "none"}`}>
-            <hr className="opacity-50" />
+          <div className={`space-y-4 ${hasScore ? "" : "hidden"}`}>
+            <Separator />
             <div className="flex flex-row gap-4">
               <FormField
                 control={form.control}
@@ -362,9 +363,9 @@ export default function CadastrarPaciente() {
                 )}
               />
             </div>
-          </div>
-          <div className="font-bold text-xl py-2">
-            Pontuação: <span className="text-primary">{scoreValue}</span>
+            <div className="font-bold text-xl py-2">
+              Pontuação: <span className="text-primary">{scoreValue}</span>
+            </div>
           </div>
           <div className=" flex flex-row justify-end space-x-4">
             <Button
