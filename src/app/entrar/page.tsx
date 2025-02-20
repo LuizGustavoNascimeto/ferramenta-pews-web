@@ -11,22 +11,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { userSchema } from "@/lib/schemas/userSchema";
+import { loginSchema } from "@/lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { loginUser } from "@/api/users";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Entrar() {
-  const form = useForm<Zod.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+
+  const form = useForm<Zod.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
+      password: "",
     },
   });
 
-  const onSubmit = (values: Zod.infer<typeof userSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: Zod.infer<typeof loginSchema>) => {
+    console.log("values", values);
+    try {
+      const response = await loginUser(values);
+      console.log("Login successful:", response);
+      useRouter().push("/painel");
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
   };
 
   return (
@@ -38,7 +49,7 @@ export default function Entrar() {
               Ferramenta PEWS
             </h1>
           </div>
-          <div className="flex  flex-col text-white gap-1">
+          <div className="flex flex-col text-white gap-1">
             <div className="">Não possui conta?</div>
             <Link href={"/cadastrar"} className="w-[100%]">
               <Button variant={"outline"} className="border-white w-full">Criar conta</Button>
@@ -73,7 +84,7 @@ export default function Entrar() {
                     <FormItem>
                       <FormLabel> Senha </FormLabel>
                       <FormControl>
-                        <Input placeholder="********" {...field} />
+                        <Input type="password" placeholder="********" {...field} />
                       </FormControl>
                     </FormItem>
                   )}

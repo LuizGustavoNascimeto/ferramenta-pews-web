@@ -15,27 +15,45 @@ import { userSchema } from "@/lib/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { createUser, getAllUsers } from "@/api/users";
+import Link from "next/link";
 
 export default function Entrar() {
   const form = useForm<Zod.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
+      name: "usuario",
+      document: "",
+      specialty: "",
       username: "",
+      password: "",
+      role: "HEALTH_STAFFFF",
     },
   });
 
-  const onSubmit = (values: Zod.infer<typeof userSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: Zod.infer<typeof userSchema>) => {
+    try {
+      const user = await createUser(values);
+      console.log("User created:", user);
+    } catch (error) { 
+      console.error("Error creating user:", error);
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="w-3/5 h-3/4 bg-background rounded-2xl flex justify-between overflow-hidden">
-        <div className="w-2/5 h-full bg-primary flex flex-col items-center py-40">
+        <div className="w-2/5 h-full bg-primary flex flex-col justify-between items-center py-40">
           <div className="">
             <h1 className="font-bold text-4xl text-white px-20 text-center">
               Ferramenta PEWS
             </h1>
+          </div>
+          <div className="flex  flex-col text-white gap-1">
+            <div className="">Já possui conta?</div>
+            <Link href={"/entrar"} className="w-[100%]">
+              <Button variant={"outline"} className="border-white w-full">Entrar</Button>
+            </Link>
           </div>
         </div>
 
@@ -61,24 +79,24 @@ export default function Entrar() {
                 />
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="document"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> Email </FormLabel>
+                      <FormLabel> Documento </FormLabel>
                       <FormControl>
-                        <Input placeholder="Jordanadasilva@gmail.com" {...field} />
+                        <Input placeholder="***.***.***-**" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="cpf"
+                  name="specialty"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> cpf </FormLabel>
+                      <FormLabel> Especialidade </FormLabel>
                       <FormControl>
-                        <Input placeholder="***.***.***-**" {...field} />
+                        <Input placeholder="Medico geral" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -89,18 +107,6 @@ export default function Entrar() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel> Senha </FormLabel>
-                      <FormControl>
-                        <Input placeholder="********" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel> Confirmar Senha </FormLabel>
                       <FormControl>
                         <Input placeholder="********" {...field} />
                       </FormControl>
