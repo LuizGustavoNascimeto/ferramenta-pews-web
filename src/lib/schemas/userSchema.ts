@@ -2,9 +2,11 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-  username: z.string({ required_error: "Username é obrigatório" }),
-  email: z.string({ required_error: "Email é obrigatório" }).email(),
-  cpf: z.string({ required_error: "CPF é obrigatório" }),
-  password: z.string({ required_error: "Password é obrigatório" }),
+  name: z.string().nonempty("Nome é obrigatório"),
+  document: z.string().nonempty("Documento é obrigatório"),
+  specialty: z.string().nonempty("Especialidade é obrigatória"),
+  username: z.string().nonempty("Nome de usuário é obrigatório"),
+  password: z.string().nonempty("Senha é obrigatória"),
+  role: z.string().nonempty("Role é obrigatório"),
 });
 
