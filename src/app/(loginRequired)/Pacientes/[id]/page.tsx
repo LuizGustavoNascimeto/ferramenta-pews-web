@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 import { useParams } from "next/navigation";
 import { intervention } from "@/lib/utils";
+import Link from "next/link";
 
 export default async function page() {
   const params = useParams<{ id: string }>();
@@ -83,15 +84,20 @@ export default async function page() {
       <Separator />
       {lastScore ? (
         <div className=" flex flex-col gap-4">
-          <div className="flex flex-row gap-4">
-            <h2 className="text-2xl font-semibold">
-              Ultima pontuação: {lastScore.scoreValue}{" "}
-              <span className="text-sm font-normal opacity-70">
-                {lastScore.createdAt
-                  ? `(${calcDiffTime(lastScore.createdAt)} atrás)`
-                  : ""}
-              </span>
-            </h2>
+          <div className="flex justify-between">
+            <div className="flex flex-row gap-4">
+              <h2 className="text-2xl font-semibold">
+                Ultima pontuação: {lastScore.scoreValue}{" "}
+                <span className="text-sm font-normal opacity-70">
+                  {lastScore.createdAt
+                    ? `(${calcDiffTime(lastScore.createdAt)} atrás)`
+                    : ""}
+                </span>
+              </h2>
+            </div>
+            <Button>
+              <Link href={"/"}>Adicionar Pews</Link>
+            </Button>
           </div>
           <div className="flex flex-col gap-2">
             <div className="">
@@ -128,10 +134,12 @@ export default async function page() {
           <div className="flex gap-1">
             <p className=" font-semibold">FC:</p>
             <p>{lastScore.fc}</p>
+            <span className="underline">Histórico</span>
           </div>
           <div className="flex gap-1">
             <p className=" font-semibold">RPM:</p>
             <p>{lastScore.rpm}</p>
+            <span className="underline">Histórico</span>
           </div>
           <div className="flex gap-1">
             <p className=" font-semibold">Avaliação neurológica:</p>

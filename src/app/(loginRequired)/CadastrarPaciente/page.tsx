@@ -374,7 +374,7 @@ export default function CadastrarPaciente() {
               onClick={() => setHasScore(!hasScore)}
             >
               {hasScore
-                ? "- Remover avaliação PEWS"
+                ? "- Cancelar"
                 : "+ Adicionar avaliação PEWS"}
             </Button>
             <Button type="submit" onClick={() => onSubmit(form.getValues())}>
