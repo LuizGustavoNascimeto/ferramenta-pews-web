@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { createUser, getAllUsers } from "@/api/users";
 import Link from "next/link";
 
-export default function Entrar() {
+export default function Registrar() {
   const form = useForm<Zod.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
