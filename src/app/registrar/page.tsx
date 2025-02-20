@@ -39,16 +39,19 @@ export default function Registrar() {
       console.error("Error creating user:", error);
     }
   };
-
+  
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="w-3/5 h-3/4 bg-background rounded-2xl flex justify-between overflow-hidden">
+
         <div className="w-2/5 h-full bg-primary flex flex-col justify-between items-center py-40">
+
           <div className="">
             <h1 className="font-bold text-4xl text-white px-20 text-center">
               Ferramenta PEWS
             </h1>
           </div>
+
           <div className="flex  flex-col text-white gap-1">
             <div className="">Já possui conta?</div>
             <Link href={"/entrar"} className="w-[100%]">
@@ -85,6 +88,8 @@ export default function Registrar() {
                       <FormLabel> Documento </FormLabel>
                       <FormControl>
                         <Input placeholder="***.***.***-**" {...field} />
+
+
                       </FormControl>
                     </FormItem>
                   )}
