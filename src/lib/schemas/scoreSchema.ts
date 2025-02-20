@@ -19,6 +19,9 @@ const scoreSchema = z.object({
     .max(3, "A avaliação respiratória deve ser um número de 0 a 3"),
   nebulizacao: z.boolean(),
   emese: z.boolean(),
+  scoreValue: z
+    .number()
+    .min(0, "O valor da pontuação deve ser um número positivo"),
 });
 
 export default scoreSchema;
