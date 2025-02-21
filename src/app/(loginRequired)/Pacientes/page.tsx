@@ -11,9 +11,9 @@ import React, { useEffect, useState } from "react";
 
 export default function Paciente() {
   const [patients, setPatients] = useState<patientRes[]>([]);
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filteredItems, setFilteredItems] = useState(patients)
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState(patients);
+
   useEffect(() => {
     async function fetchPatients() {
       const data = await getAllPatients();
@@ -21,31 +21,30 @@ export default function Paciente() {
     }
     fetchPatients();
   }, []);
-  
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    setSearchTerm(value)
 
-    const filtered = patients.filter((item) => 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    const filtered = patients.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())
-    )
-    setFilteredItems(filtered)
-  }
+    );
+    setFilteredItems(filtered);
+  };
 
   return (
     <div className="gap-3 flex flex-col min-w-[800px]">
       <Title>Lista de Pacientes</Title>
 
-      
       <div className="flex flex-row items-end gap-1 w-full">
-        <Link href={"/CadastrarPaciente"} className="">
+        <Link href={"/cadastrarPaciente"} className="">
           <Button>Novo Paciente</Button>
         </Link>
 
         <div className="flex flex-col gap-2 w-full">
           <h2 className="font-semibold">Pesquisar</h2>
-          
-          <Input 
+
+          <Input
             type="text"
             placeholder="Ex: João Pereira"
             value={searchTerm}
@@ -64,13 +63,23 @@ export default function Paciente() {
       {filteredItems.length > 0 ? (
         <div className="gap-3 flex flex-col">
           {filteredItems.map((patient) => (
-            <Card name={patient.name} dateAvaluation={patient.updatedAt} pewsPontuation={patient.dih} patientId={patient.id}></Card>
+            <Card
+              name={patient.name}
+              dateAvaluation={patient.updatedAt}
+              pewsPontuation={patient.dih}
+              patientId={patient.id}
+            ></Card>
           ))}
         </div>
       ) : (
         <div className="gap-3 flex flex-col">
           {patients.map((patient) => (
-            <Card name={patient.name} dateAvaluation={patient.updatedAt} pewsPontuation={patient.dih} patientId={patient.id}></Card>
+            <Card
+              name={patient.name}
+              dateAvaluation={patient.updatedAt}
+              pewsPontuation={patient.dih}
+              patientId={patient.id}
+            ></Card>
           ))}
         </div>
       )}
