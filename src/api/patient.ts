@@ -1,19 +1,10 @@
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import { patientReq, patientRes } from "@/lib/types/patient";
+import api from "./api";
 
-/*END POINT AINDA NÃO CRIADO */
 export const createPatient = async (data: patientReq): Promise<patientRes> => {
-  // const response = await api.post("/patient", data);
-  const response = {
-    data: {
-      ...data,
-      id: "example-id",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  };
+  const response = await api.post("/patient", data);
   console.log(response.data);
-
   return response.data;
 };
 

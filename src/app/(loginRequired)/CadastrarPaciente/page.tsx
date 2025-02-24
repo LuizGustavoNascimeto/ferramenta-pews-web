@@ -22,11 +22,12 @@ import { Separator } from "@/components/ui/separator";
 import Title from "@/components/ui/title";
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import scoreSchema from "@/lib/schemas/scoreSchema";
-import { intervention, scoreCalculator } from "@/lib/utils";
+import { intervention, scoreCalculator, createPatientSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { createPatient } from "@/api/patient";
 
 export default function CadastrarPaciente() {
   const cardioOptions = [
@@ -65,7 +66,7 @@ export default function CadastrarPaciente() {
       value: 3,
     },
   ];
-  const combinedSchema = z.intersection(patientSchema, scoreSchema);
+  const combinedSchema = z.intersection(createPatientSchema, scoreSchema);
   const form = useForm<z.infer<typeof combinedSchema>>({
     resolver: zodResolver(combinedSchema),
   });
@@ -86,12 +87,13 @@ export default function CadastrarPaciente() {
     setScoreValue(score);
   }, watchField);
 
-  const onSubmit = (data: z.infer<typeof combinedSchema>) => {
-    console.log("VALUES");
-    // createPatient(data);
-    // if (hasScore) {
-    //   createScore(data);
-    // }
+  const onSubmit = async (values: z.infer<typeof combinedSchema>) => {
+    try {
+      const patient = await createPatient(values);
+      console.log("User created:", patient);
+    } catch (error) { 
+      console.error("Error creating user:", error);
+    }
   };
   const [hasScore, setHasScore] = useState(false);
 
@@ -386,3 +388,4 @@ export default function CadastrarPaciente() {
     </div>
   );
 }
+
