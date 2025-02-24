@@ -1,6 +1,6 @@
 "use client";
 import { getAllPatients } from "@/api/patient";
-import Card from "@/components/ui/card";
+import Card from "@/components/pacienteLista/patientRow";
 import Title from "@/components/ui/title";
 import { patientRes } from "@/lib/types/patient";
 import { useEffect, useState } from "react";

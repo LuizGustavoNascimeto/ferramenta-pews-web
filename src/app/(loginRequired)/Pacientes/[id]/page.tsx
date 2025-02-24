@@ -1,20 +1,26 @@
 "use client";
 import { getPatientById } from "@/api/patient";
+import { HistoricRow } from "@/components/paciente/historicoRow";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Title from "@/components/ui/title";
 import { patientRes } from "@/lib/types/patient";
 import { scoreRes } from "@/lib/types/score";
-import { Settings } from "lucide-react";
 import {
-  differenceInSeconds,
-  differenceInMinutes,
-  differenceInHours,
+  cardiovascularEvaluation,
+  intervention,
+  neurologicEvaluation,
+  respiratoryEvaluation,
+} from "@/lib/utils";
+import {
   differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
 } from "date-fns";
-import { useParams } from "next/navigation";
-import { intervention } from "@/lib/utils";
+import { Settings } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default async function page() {
   const params = useParams<{ id: string }>();
@@ -132,26 +138,16 @@ export default async function page() {
             <p>{lastScore.estadoConsciencia}</p>
           </div>
           <div className="flex gap-1">
-            <p className=" font-semibold">FC:</p>
-            <p>{lastScore.fc}</p>
-            <span className="underline">Histórico</span>
-          </div>
-          <div className="flex gap-1">
-            <p className=" font-semibold">RPM:</p>
-            <p>{lastScore.rpm}</p>
-            <span className="underline">Histórico</span>
-          </div>
-          <div className="flex gap-1">
             <p className=" font-semibold">Avaliação neurológica:</p>
-            <p>{lastScore.avaliacaoNeurologica}</p>
+            <p>{neurologicEvaluation(lastScore.avaliacaoNeurologica)}</p>
           </div>
           <div className="flex gap-1">
             <p className=" font-semibold">Avaliação cardiovascular:</p>
-            <p>{lastScore.avaliacaoCardioVascular}</p>
+            <p>{cardiovascularEvaluation(lastScore.avaliacaoCardioVascular)}</p>
           </div>
           <div className="flex gap-1">
             <p className=" font-semibold">Avaliação respiratória:</p>
-            <p>{lastScore.avaliacaoRespiratoria}</p>
+            <p>{respiratoryEvaluation(lastScore.avaliacaoRespiratoria)}</p>
           </div>
           <div className="flex gap-1">
             <p className=" font-semibold">
@@ -165,6 +161,14 @@ export default async function page() {
             </p>
             <p>{lastScore.emese ? "Sim" : "Não"}</p>
           </div>
+          <HistoricRow
+            text="Frequência Cardíaca por minuto"
+            value={lastScore.fc}
+          />{" "}
+          <HistoricRow
+            text="Frequência Respiratória minuto"
+            value={lastScore.rpm}
+          />
         </div>
       )}
     </div>
