@@ -82,3 +82,47 @@ export function intervention(scoreValue: number): interventionRes {
   }
   return res;
 }
+export function neurologicEvaluation(score: number): string {
+  switch (score) {
+    case 0:
+      return "Ativo";
+    case 1:
+      return "Sonolento / hipoativo";
+    case 2:
+      return "Irritado";
+    case 3:
+      return "Letárgico / obnubilado ou resposta reduzida à dor";
+    default:
+      throw new Error("Invalid value");
+  }
+}
+
+export function cardiovascularEvaluation(score: number): string {
+  switch (score) {
+    case 0:
+      return "Corado ou TEC 1-2 seg";
+    case 1:
+      return "Pálido ou TEC 3 seg ou FC acima do limite superior para a idade";
+    case 2:
+      return "Moteado ou TEC 4 seg ou FC ≥ 20 bpm acima do limite superior para a idade";
+    case 3:
+      return "Acinzentado / cianótico ou TEC ≥ 5 seg ou FC ≥ 30 bpm acima do limite superior para a idade ou bradicardia para a idade";
+    default:
+      throw new Error("Invalid value");
+  }
+}
+
+export function respiratoryEvaluation(score: number): string {
+  switch (score) {
+    case 0:
+      return "FR normal para a idade, sem retração";
+    case 1:
+      return "FR acima do limite superior para a idade, uso de musculatura acessória ou FiO2 ≥ 30% ou 4 litros/min de O2";
+    case 2:
+      return "FR ≥ 20 rpm acima do limite superior para a idade, retrações subcostais, intercostais e de fúrcula ou FiO2 ≥ 40% ou 6 litros/min de O2";
+    case 3:
+      return "FR ≥ 5 rpm abaixo do limite inferior para a idade, retrações subcostais, intercostais, de fúrcula, do esterno e gemência ou FiO2 ≥ 50% ou 8 litros/min de O2";
+    default:
+      throw new Error("Invalid value");
+  }
+}

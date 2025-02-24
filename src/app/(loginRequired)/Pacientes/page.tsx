@@ -2,7 +2,7 @@
 
 import { getAllPatients } from "@/api/patient";
 import { Button } from "@/components/ui/button";
-import Card from "@/components/ui/card";
+import PatientRow from "@/components/pacienteLista/patientRow";
 import { Input } from "@/components/ui/input";
 import Title from "@/components/ui/title";
 import { patientRes } from "@/lib/types/patient";
@@ -63,23 +63,23 @@ export default function Paciente() {
       {filteredItems.length > 0 ? (
         <div className="gap-3 flex flex-col">
           {filteredItems.map((patient) => (
-            <Card
+            <PatientRow
               name={patient.name}
               dateAvaluation={patient.updatedAt}
               pewsPontuation={patient.dih}
               patientId={patient.id}
-            ></Card>
+            ></PatientRow>
           ))}
         </div>
       ) : (
         <div className="gap-3 flex flex-col">
           {patients.map((patient) => (
-            <Card
+            <PatientRow
               name={patient.name}
               dateAvaluation={patient.updatedAt}
               pewsPontuation={patient.dih}
               patientId={patient.id}
-            ></Card>
+            ></PatientRow>
           ))}
         </div>
       )}
