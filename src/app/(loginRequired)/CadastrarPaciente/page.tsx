@@ -20,14 +20,13 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import Title from "@/components/ui/title";
-import { patientSchema } from "@/lib/schemas/patientSchema";
-import scoreSchema from "@/lib/schemas/scoreSchema";
-import { intervention, scoreCalculator, createPatientSchema } from "@/lib/utils";
+import { intervention, scoreCalculator } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createPatient } from "@/api/patient";
+import { createPatientAPI } from "@/api/patient";
+import { createPatientSchema } from "@/lib/schemas/createPatientSchema";
 
 export default function CadastrarPaciente() {
   const cardioOptions = [
@@ -66,35 +65,68 @@ export default function CadastrarPaciente() {
       value: 3,
     },
   ];
-  const combinedSchema = z.intersection(createPatientSchema, scoreSchema);
-  const form = useForm<z.infer<typeof combinedSchema>>({
-    resolver: zodResolver(combinedSchema),
+  const form = useForm<z.infer<typeof createPatientSchema>>({
+    resolver: zodResolver(createPatientSchema),
+    defaultValues: {
+      name: "",
+      diagnosis: "",
+      bed: 0,
+      birthDate: "",
+      admissionDate: "",
+      score: {
+        fcm: 0,
+        frm: 0,
+        avaliacaoNeurologica: 0,
+        avaliacaoCardiovascular: 0,
+        avaliacaoRespiratoria: 0,
+        nebulizacao: false,
+        eps_Emese: false,
+        intervention: {
+          description: "",
+          tempoControleSSVV: "",
+        },
+      },
+    },
   });
 
   const [scoreValue, setScoreValue] = useState(0);
 
   const watchField = [
-    form.watch().avaliacaoCardioVascular,
-    form.watch().avaliacaoNeurologica,
-    form.watch().avaliacaoRespiratoria,
-    form.watch().nebulizacao,
-    form.watch().emese,
-    form.watch().estadoConsciencia,
+    form.watch("score.avaliacaoCardiovascular"),
+    form.watch("score.avaliacaoNeurologica"),
+    form.watch("score.avaliacaoRespiratoria"),
+    form.watch("score.nebulizacao"),
+    form.watch("score.eps_Emese"),
   ];
 
   useEffect(() => {
-    const score = scoreCalculator(form.getValues());
+    const score = scoreCalculator(form.getValues().score);
     setScoreValue(score);
   }, watchField);
 
-  const onSubmit = async (values: z.infer<typeof combinedSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createPatientSchema>) => {
     try {
-      const patient = await createPatient(values);
-      console.log("User created:", patient);
-    } catch (error) { 
+      const patientData = {
+        ...values,
+        bed: values.bed.toString(), // Convertendo bed para string
+        birthDate: new Date(values.birthDate), // Convertendo birthDate para Date
+        dih: calculateDIH(values.admissionDate), // Adicionando a propriedade dih
+      };
+      const patient = await createPatientAPI(patientData);
+      console.log("Pacient created:", patient);
+    } catch (error) {
       console.error("Error creating user:", error);
     }
   };
+
+  const calculateDIH = (admissionDate: string): number => {
+    const admission = new Date(admissionDate);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - admission.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
   const [hasScore, setHasScore] = useState(false);
 
   return (
@@ -147,24 +179,6 @@ export default function CadastrarPaciente() {
             />
             <FormField
               control={form.control}
-              name="dih"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>DIH</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="5"
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="bed"
               render={({ field }) => (
                 <FormItem>
@@ -182,28 +196,7 @@ export default function CadastrarPaciente() {
             <div className="flex flex-row gap-4">
               <FormField
                 control={form.control}
-                name="estadoConsciencia"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estado de Consciência</FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="selecione" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="vigila">Vigila</SelectItem>
-                        <SelectItem value="sono">Sono</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="fc"
+                name="score.fcm"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Frequência Cardiaca</FormLabel>
@@ -221,7 +214,7 @@ export default function CadastrarPaciente() {
               />
               <FormField
                 control={form.control}
-                name="rpm"
+                name="score.frm"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>RPM</FormLabel>
@@ -240,7 +233,7 @@ export default function CadastrarPaciente() {
             </div>
             <FormField
               control={form.control}
-              name="avaliacaoNeurologica"
+              name="score.avaliacaoNeurologica"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Avaliação Neurológica</FormLabel>
@@ -271,7 +264,7 @@ export default function CadastrarPaciente() {
             />
             <FormField
               control={form.control}
-              name="avaliacaoRespiratoria"
+              name="score.avaliacaoRespiratoria"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Avaliação Respiratória</FormLabel>
@@ -302,7 +295,7 @@ export default function CadastrarPaciente() {
             />
             <FormField
               control={form.control}
-              name="avaliacaoCardioVascular"
+              name="score.avaliacaoCardiovascular"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Avaliação Cardiovascular</FormLabel>
@@ -334,7 +327,7 @@ export default function CadastrarPaciente() {
             <div className="flex flex-row gap-4">
               <FormField
                 control={form.control}
-                name="nebulizacao"
+                name="score.nebulizacao"
                 render={({ field }) => (
                   <FormItem className="flex items-center space-x-2 space-y-0">
                     <FormControl>
@@ -349,7 +342,7 @@ export default function CadastrarPaciente() {
               />
               <FormField
                 control={form.control}
-                name="emese"
+                name="score.eps_Emese"
                 render={({ field }) => (
                   <FormItem className="flex items-center space-x-2  space-y-0">
                     <FormControl>
@@ -375,9 +368,7 @@ export default function CadastrarPaciente() {
               type="button"
               onClick={() => setHasScore(!hasScore)}
             >
-              {hasScore
-                ? "- Cancelar"
-                : "+ Adicionar avaliação PEWS"}
+              {hasScore ? "- Cancelar" : "+ Adicionar avaliação PEWS"}
             </Button>
             <Button type="submit" onClick={() => onSubmit(form.getValues())}>
               Cadastrar
@@ -388,4 +379,3 @@ export default function CadastrarPaciente() {
     </div>
   );
 }
-

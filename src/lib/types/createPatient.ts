@@ -1,13 +1,15 @@
 import { z } from "zod";
 import { patientSchema } from "../schemas/patientSchema";
+import { createPatientSchema } from "../schemas/createPatientSchema";
 
-export type patientReq = z.infer<typeof patientSchema>;
+export type createPatientReq = z.infer<typeof createPatientSchema>;
 
-export type patientRes = patientReq & {
-  id: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  patientUUID: string;
+export type createPatientRes = createPatientReq & {
+  name: string,
+  diagnosis: string,
+  bed: number,
+  birthDate: string,
+  admissionDate: string,
   score: {
     fcm: number;
     frm: number;
@@ -24,4 +26,4 @@ export type patientRes = patientReq & {
   };
 };
 
-export type patientUpdate = Partial<patientRes>;
+export type patientUpdate = Partial<createPatientRes>;

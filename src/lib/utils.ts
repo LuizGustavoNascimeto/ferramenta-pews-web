@@ -1,22 +1,21 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { scoreReq } from "./types/score";
+import { createScoreReq } from "./types/createScore";
 import { interventionRes } from "./types/intervention";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function scoreCalculator(score: scoreReq): number {
+export function scoreCalculator(score: createScoreReq): number {
   let {
-    estadoConsciencia,
-    fc,
-    rpm,
+    fcm,
+    frm,
     avaliacaoNeurologica,
-    avaliacaoCardioVascular,
+    avaliacaoCardiovascular,
     avaliacaoRespiratoria,
     nebulizacao,
-    emese,
+    eps_Emese,
   } = score;
   console.log(score);
 
@@ -24,21 +23,21 @@ export function scoreCalculator(score: scoreReq): number {
   if (avaliacaoNeurologica === undefined) {
     avaliacaoNeurologica = 0;
   }
-  if (avaliacaoCardioVascular === undefined) {
-    avaliacaoCardioVascular = 0;
+  if (avaliacaoCardiovascular === undefined) {
+    avaliacaoCardiovascular = 0;
   }
   if (avaliacaoRespiratoria === undefined) {
     avaliacaoRespiratoria = 0;
   }
   scoreValue += avaliacaoNeurologica;
-  scoreValue += avaliacaoCardioVascular;
+  scoreValue += avaliacaoCardiovascular;
   scoreValue += avaliacaoRespiratoria;
 
   if (nebulizacao) {
     scoreValue += 2;
   }
 
-  if (emese) {
+  if (eps_Emese) {
     scoreValue += 2;
   }
 
@@ -82,6 +81,7 @@ export function intervention(scoreValue: number): interventionRes {
   }
   return res;
 }
+
 export function neurologicEvaluation(score: number): string {
   switch (score) {
     case 0:
