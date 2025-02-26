@@ -7,8 +7,5 @@ export const patientSchema = z.object({
   birthDate: z.date({ message: "Data de nascimento é obrigatória" }),
   diagnosis: z.string({ message: "Diagnóstico é obrigatório" }),
   bed: z.string({ message: "Leito é obrigatório" }),
-  dih: z
-    .number({ message: "DIH é obrigatório" })
-    .min(0, { message: "DIH não pode ser menor que 0" }),
+  admissionDate: z.date({ message: "Data de entrada é obrigatória" }),
 });
-

@@ -1,40 +1,38 @@
 "use client";
 
 import { getAllPatients } from "@/api/patient";
-import { Button } from "@/components/ui/button";
+import { PaginationPacients } from "@/components/pacienteLista/paginationPacients";
 import PatientRow from "@/components/pacienteLista/patientRow";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Title from "@/components/ui/title";
-import { patientRes } from "@/lib/types/patient";
+import { patientRes, patientsPagination } from "@/lib/types/patient";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { createPatientRes } from "@/lib/types/createPatientTest";
-import { createScoreRes } from "@/lib/types/createScore";
-import { set } from "date-fns";
+import { useEffect, useState } from "react";
 
 export default function Paciente() {
-  const [patients, setPatients] = useState<createPatientRes[]>([]);
+  const [patients, setPatients] = useState<patientRes[]>();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredItems, setFilteredItems] = useState<createPatientRes[]>([]);
+
+  // Estados de paginação
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize] = useState(2);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchPatients = async (page: number, size: number) => {
+    const data: patientsPagination = await getAllPatients(page, size);
+    setPatients(data.patientList);
+    data.total = 25;
+    setTotalPages(Math.ceil(data.total / size)); // data.total representa o total de pacientes
+  };
 
   useEffect(() => {
-    async function fetchPatients() {
-      const data = await getAllPatients();
-      console.log(data.patientList);
-      setPatients(data.patientList);
-      setFilteredItems(data.patientList);
-    }
-    fetchPatients();
-  }, []);
+    fetchPatients(currentPage, pageSize);
+  }, [currentPage, pageSize]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
-
-    const filtered = patients.filter((item) =>
-      item.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredItems(filtered);
   };
 
   return (
@@ -65,31 +63,38 @@ export default function Paciente() {
         <h3 className="font-semibold">Pontuação</h3>
       </div>
 
-      {filteredItems.length > 0 ? (
+      {/* {filteredItems ? (
         <div className="gap-3 flex flex-col">
           {filteredItems.map((patient) => (
             <PatientRow
               key={patient.uuid}
               name={patient.name}
               dateAvaluation={patient.admissionDate}
-              pewsPontuation={patient.scoreList.length > 0 ? patient.scoreList[0].final_rating : undefined}
               patientId={patient.uuid}
             />
           ))}
         </div>
-      ) : (
-        <div className="gap-3 flex flex-col">
-          {patients.map((patient) => (
+      ) : ( */}
+
+      <div className="gap-3 flex flex-col">
+        {patients &&
+          patients.map((patient) => (
             <PatientRow
               key={patient.uuid}
               name={patient.name}
               dateAvaluation={patient.admissionDate}
-              pewsPontuation={patient.scoreList.length > 0 ? patient.scoreList[0].final_rating : undefined}
               patientId={patient.uuid}
             />
           ))}
-        </div>
-      )}
+      </div>
+      {/* )} */}
+      <div className="flex my-5 justify-center">
+        <PaginationPacients
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </div>
   );
 }
