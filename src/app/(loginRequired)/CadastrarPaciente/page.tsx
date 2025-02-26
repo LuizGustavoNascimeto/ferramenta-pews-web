@@ -70,7 +70,6 @@ export default function CadastrarPaciente() {
     defaultValues: {
       name: "",
       diagnosis: "",
-      bed: 0,
       birthDate: "",
       admissionDate: "",
       score: {
@@ -81,6 +80,7 @@ export default function CadastrarPaciente() {
         avaliacaoRespiratoria: 0,
         nebulizacao: false,
         eps_Emese: false,
+        final_rating: 0,
         intervention: {
           description: "",
           tempoControleSSVV: "",
@@ -105,26 +105,28 @@ export default function CadastrarPaciente() {
   }, watchField);
 
   const onSubmit = async (values: z.infer<typeof createPatientSchema>) => {
+    console.log("Form values:", values);
     try {
+      const formatDate = (date: string) => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+
       const patientData = {
         ...values,
-        bed: values.bed.toString(), // Convertendo bed para string
-        birthDate: new Date(values.birthDate), // Convertendo birthDate para Date
-        dih: calculateDIH(values.admissionDate), // Adicionando a propriedade dih
+        birthDate: formatDate(values.birthDate),
+        admissionDate: formatDate(new Date().toISOString()),
+        final_rating: scoreValue,
       };
+      console.log(patientData);
       const patient = await createPatientAPI(patientData);
       console.log("Pacient created:", patient);
     } catch (error) {
       console.error("Error creating user:", error);
     }
-  };
-
-  const calculateDIH = (admissionDate: string): number => {
-    const admission = new Date(admissionDate);
-    const today = new Date();
-    const diffTime = Math.abs(today.getTime() - admission.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
   };
 
   const [hasScore, setHasScore] = useState(false);
@@ -178,18 +180,23 @@ export default function CadastrarPaciente() {
               )}
             />
             <FormField
-              control={form.control}
-              name="bed"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Leito</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enfermaria 102-B" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                control={form.control}
+                name="bed"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Leito</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="04"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
           </div>
           <div className={`space-y-4 ${hasScore ? "" : "hidden"}`}>
             <Separator />

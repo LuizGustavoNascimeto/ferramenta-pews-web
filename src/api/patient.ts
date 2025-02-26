@@ -1,8 +1,9 @@
 import { patientSchema } from "@/lib/schemas/patientSchema";
 import { patientReq, patientRes } from "@/lib/types/patient";
 import api from "./api";
+import { createPatientReq, createPatientRes } from "@/lib/types/createPatient";
 
-export const createPatientAPI = async (data: patientReq): Promise<patientRes> => {
+export const createPatientAPI = async (data: createPatientReq): Promise<createPatientRes> => {
   const response = await api.post("/patient", data);
   console.log(response.data);
   return response.data;
