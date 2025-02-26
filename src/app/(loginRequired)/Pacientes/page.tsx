@@ -8,16 +8,21 @@ import Title from "@/components/ui/title";
 import { patientRes } from "@/lib/types/patient";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { createPatientRes } from "@/lib/types/createPatientTest";
+import { createScoreRes } from "@/lib/types/createScore";
+import { set } from "date-fns";
 
 export default function Paciente() {
-  const [patients, setPatients] = useState<patientRes[]>([]);
+  const [patients, setPatients] = useState<createPatientRes[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredItems, setFilteredItems] = useState(patients);
+  const [filteredItems, setFilteredItems] = useState<createPatientRes[]>([]);
 
   useEffect(() => {
     async function fetchPatients() {
       const data = await getAllPatients();
-      setPatients(data);
+      console.log(data.patientList);
+      setPatients(data.patientList);
+      setFilteredItems(data.patientList);
     }
     fetchPatients();
   }, []);
@@ -64,22 +69,24 @@ export default function Paciente() {
         <div className="gap-3 flex flex-col">
           {filteredItems.map((patient) => (
             <PatientRow
+              key={patient.uuid}
               name={patient.name}
-              dateAvaluation={patient.updatedAt}
-              pewsPontuation={patient.dih}
-              patientId={patient.id}
-            ></PatientRow>
+              dateAvaluation={patient.admissionDate}
+              pewsPontuation={patient.scoreList.length > 0 ? patient.scoreList[0].final_rating : undefined}
+              patientId={patient.uuid}
+            />
           ))}
         </div>
       ) : (
         <div className="gap-3 flex flex-col">
           {patients.map((patient) => (
             <PatientRow
+              key={patient.uuid}
               name={patient.name}
-              dateAvaluation={patient.updatedAt}
-              pewsPontuation={patient.dih}
-              patientId={patient.id}
-            ></PatientRow>
+              dateAvaluation={patient.admissionDate}
+              pewsPontuation={patient.scoreList.length > 0 ? patient.scoreList[0].final_rating : undefined}
+              patientId={patient.uuid}
+            />
           ))}
         </div>
       )}

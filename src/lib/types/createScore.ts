@@ -4,7 +4,7 @@ import { createScoreSchema } from "../schemas/createScoreSchema";
 export type createScoreReq = z.infer<typeof createScoreSchema>;
 
 export type createScoreRes = {
-  id: string;
+  uuid?: string;
   createdAt?: Date;
   updatedAt?: Date;
   patientUUID: string;
@@ -17,6 +17,7 @@ export type createScoreRes = {
   eps_Emese: boolean;
   final_rating: number;
   intervention: {
+    uuid?: string;
     description: string;
     tempoControleSSVV: string;
   };
