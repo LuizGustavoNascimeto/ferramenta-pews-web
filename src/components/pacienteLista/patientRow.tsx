@@ -2,10 +2,11 @@ import React from "react";
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { format } from "date-fns";
 
 interface CardProps {
   name: string;
-  dateAvaluation?: string;
+  dateAvaluation: Date;
   pewsPontuation?: number;
   patientId?: string;
 }
@@ -20,8 +21,8 @@ export default function PatientRow({
     <Link href={`/Pacientes/${patientId}`} className="justify-self-end">
       <div className="grid grid-cols-4 place-items-center rounded-md bg-card py-3 px-5">
         <h1 className="justify-self-start">{name}</h1>
-        <h2>{dateAvaluation}</h2>
-        <h2>{pewsPontuation}</h2>
+        <h2>{format(dateAvaluation, "dd/MM/yyyy")}</h2>
+        {pewsPontuation ? <h2>{pewsPontuation}</h2> : <h2>Sem pontuação</h2>}
         <div className="justify-self-end">
           <Button className="w-fit">
             <Settings />
