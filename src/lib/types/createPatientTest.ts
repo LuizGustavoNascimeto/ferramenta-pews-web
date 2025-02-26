@@ -11,7 +11,7 @@ export type createPatientRes = createPatientReq & {
   bed: number,
   birthDate: string,
   admissionDate: string,
-  score: {
+  scoreList: [{
     fcm: number;
     frm: number;
     avaliacaoNeurologica: number;
@@ -20,11 +20,11 @@ export type createPatientRes = createPatientReq & {
     nebulizacao: boolean;
     eps_Emese: boolean;
     final_rating: number;
-    intervention: {
+    intervention: [{
       description: string;
       tempoControleSSVV: string;
-    };
-  };
+    }];
+  }];
 };
 
 export type patientUpdate = Partial<createPatientRes>;

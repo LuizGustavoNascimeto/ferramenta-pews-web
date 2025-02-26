@@ -4,6 +4,7 @@ import { HistoricRow } from "@/components/paciente/historicoRow";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Title from "@/components/ui/title";
+import { createPatientRes } from "@/lib/types/createPatient";
 import { patientRes } from "@/lib/types/patient";
 import { scoreRes } from "@/lib/types/score";
 import {
@@ -38,7 +39,7 @@ export default async function page() {
     nebulizacao: false, // boolean
     emese: true, // boolean
   };
-  const patient: patientRes = await getPatientById(params.id);
+  const patient: createPatientRes = await getPatientById(params.id);
   const age =
     new Date().getFullYear() - new Date(patient.birthDate).getFullYear();
 
@@ -79,7 +80,7 @@ export default async function page() {
           </div>
           <div className="flex gap-1">
             <span className="font-semibold">DIH: </span>
-            <span>{patient.dih}</span>
+            <span>{patient.admissionDate}</span>
           </div>
           <div className="flex gap-1">
             <span className="font-semibold">Leito: </span>
