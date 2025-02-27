@@ -52,7 +52,7 @@ export default function Entrar() {
           </div>
           <div className="flex flex-col text-white gap-1">
             <div className="">Não possui conta?</div>
-            <Link href={"/cadastrar"} className="w-[100%]">
+            <Link href={"/registrar"} className="w-[100%]">
               <Button variant={"outline"} className="border-white w-full">Criar conta</Button>
             </Link>
           </div>

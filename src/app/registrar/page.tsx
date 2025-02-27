@@ -17,8 +17,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { createUser, getAllUsers } from "@/api/users";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Registrar() {
+  const router = useRouter();
+
   const form = useForm<Zod.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -35,6 +38,7 @@ export default function Registrar() {
     try {
       const user = await createUser(values);
       console.log("User created:", user);
+      router.push("/entrar");
     } catch (error) { 
       console.error("Error creating user:", error);
     }

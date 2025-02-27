@@ -22,7 +22,7 @@ export default function Paciente() {
   const fetchPatients = async (page: number, size: number) => {
     const data: patientsPagination = await getAllPatients(page, size);
     setPatients(data.patientList);
-    data.total = 25;
+    data.total = 50;
     setTotalPages(Math.ceil(data.total / size)); // data.total representa o total de pacientes
   };
 

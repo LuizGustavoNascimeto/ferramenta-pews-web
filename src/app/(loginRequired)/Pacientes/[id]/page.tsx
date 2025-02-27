@@ -103,7 +103,7 @@ export default async function page() {
               </h2>
             </div>
             <Button>
-              <Link href={"/"}>Adicionar Pews</Link>
+              <Link href={"/cadastrarPaciente"}>Adicionar Pews</Link>
             </Button>
           </div>
           <div className="flex flex-col gap-2">
