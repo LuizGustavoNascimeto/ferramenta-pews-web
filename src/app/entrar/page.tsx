@@ -17,9 +17,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { loginUser } from "@/api/users";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Entrar() {
+  const router = useRouter();
 
   const form = useForm<Zod.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -34,7 +35,7 @@ export default function Entrar() {
     try {
       const response = await loginUser(values);
       console.log("Login successful:", response);
-      useRouter().push("/painel");
+      router.push("/painel");
     } catch (error) {
       console.error("Error logging in:", error);
     }
