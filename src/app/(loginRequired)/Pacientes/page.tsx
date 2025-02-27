@@ -16,13 +16,13 @@ export default function Paciente() {
 
   // Estados de paginação
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(2);
+  const [pageSize] = useState(7);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchPatients = async (page: number, size: number) => {
     const data: patientsPagination = await getAllPatients(page, size);
     setPatients(data.patientList);
-    data.total = 25;
+    data.total = 50;
     setTotalPages(Math.ceil(data.total / size)); // data.total representa o total de pacientes
   };
 

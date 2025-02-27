@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, Plus, List } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -15,19 +15,14 @@ export const NavMain = () => {
       icon: Home,
     },
     {
-      title: "Inbox",
+      title: "Novo Paciente",
       url: "/cadastrarPaciente",
-      icon: Inbox,
+      icon: Plus,
     },
     {
-      title: "Calendar",
-      url: "/entrar",
-      icon: Calendar,
-    },
-    {
-      title: "Search",
+      title: "Lista de Pacientes",
       url: "/Pacientes",
-      icon: Search,
+      icon: List,
     },
     {
       title: "Configurações",

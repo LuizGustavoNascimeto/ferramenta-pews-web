@@ -14,6 +14,6 @@ export const createUser = async (data: userReq): Promise<userRes> => {
 };
 
 export const loginUser = async (data: { username: string; password: string }) => {
-  const response = await api.post("/login", data);
+  const response = await api.post("/users/login", data);
   return response.data;
 };
