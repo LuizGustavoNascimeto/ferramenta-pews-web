@@ -20,11 +20,11 @@ import {
 
 type historicChartProps = {
   label: string;
-  data?: number[];
+  chartData?: { data: string; value: number }[] | undefined;
 };
 
-export function HistoricChart({ label, data }: historicChartProps) {
-  const chartData = [
+export function HistoricChart({ label, chartData }: historicChartProps) {
+  const data = [
     { month: "January", desktop: 186 },
     { month: "February", desktop: 305 },
     { month: "March", desktop: 237 },
@@ -48,7 +48,7 @@ export function HistoricChart({ label, data }: historicChartProps) {
         <ChartContainer config={chartConfig} className="max-h-[200px] w-full ">
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 6,
               right: 6,
