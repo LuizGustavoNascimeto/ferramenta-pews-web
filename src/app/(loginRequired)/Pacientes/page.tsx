@@ -16,7 +16,7 @@ export default function Paciente() {
 
   // Estados de paginação
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(2);
+  const [pageSize] = useState(7);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchPatients = async (page: number, size: number) => {

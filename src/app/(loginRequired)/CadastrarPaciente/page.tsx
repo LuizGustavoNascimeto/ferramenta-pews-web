@@ -170,7 +170,7 @@ export default function CadastrarPaciente() {
               control={form.control}
               name="birthDate"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col gap">
                   <FormLabel>Data de Nascimento</FormLabel>
                   <FormControl>
                     <DatePicker control={form.control} name="birthDate" />
